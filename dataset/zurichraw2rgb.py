@@ -26,7 +26,7 @@ class ZurichRAW2RGB(BaseImageDataset):
     [1] Replacing Mobile Camera ISP with a Single Deep Learning Model. Andrey Ignatov, Luc Van Gool and Radu Timofte,
         CVPRW 2020
     """
-    def __init__(self, root=None, split='train', image_loader=opencv_loader, initialize=True):
+    def __init__(self, root='/data/dataset/homework/SyntheticBurstVal/', split='train', image_loader=opencv_loader, initialize=True):
         """
         args:
             root - Path to root dataset directory

@@ -22,7 +22,8 @@ import torch.nn.functional as F
 import data.synthetic_burst_generation as syn_burst_generation
 from admin.tensordict import TensorDict
 import math
-
+from torchvision.transforms import ToPILImage
+to_pil = ToPILImage()
 
 class BaseProcessing:
     """ Base class for Processing. Processing class is used to process the data returned by a dataset, before passing it
@@ -85,22 +86,11 @@ class SyntheticBurstProcessing(BaseProcessing):
     def __call__(self, data: TensorDict):
         # Augmentation, e.g. convert to tensor
         if self.transform is not None:
+            # self.transform = transforms.ToTensor()
             data['frame'] = self.transform(image=data['frame'])
 
-        # add extra padding to compensate for cropping of border region
-        crop_sz = [c + 2 * self.burst_transformation_params.get('border_crop', 0) for c in self.crop_sz]
-        if getattr(self, 'random_crop', True):
-            # Perform random cropping
-            frame_crop = prutils.random_resized_crop(data['frame'], crop_sz,
-                                                     scale_range=self.crop_scale_range,
-                                                     ar_range=self.crop_ar_range)
-        else:
-            # Perform center cropping
-            assert self.crop_scale_range is None and self.crop_ar_range is None
-            frame_crop = prutils.center_crop(data['frame'], crop_sz)
-
         # Generate synthetic RAW burst
-        burst, frame_gt, burst_rgb, flow_vector, meta_info = syn_burst_generation.rgb2rawburst(frame_crop,
+        burst, frame_gt, burst_rgb, flow_vector, meta_info = syn_burst_generation.rgb2rawburst(data['frame'],
                                                                                                self.burst_size,
                                                                                                self.downsample_factor,
                                                                                                burst_transformation_params=self.burst_transformation_params,

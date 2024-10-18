@@ -42,7 +42,7 @@ class ImageFolder(BaseImageDataset):
     def _get_image_list(self):
         image_list = os.listdir(self.root)
 
-        return image_list
+        return sorted(image_list)
 
     def get_image_info(self, im_id):
         return {}

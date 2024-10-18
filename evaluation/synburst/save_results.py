@@ -30,6 +30,8 @@ from admin.environment import env_settings
 from dataset.synthetic_burst_val_set import SyntheticBurstVal
 
 
+mode = 'rggb_1'
+
 def save_results(setting_name):
     """ Saves network outputs on the SyntheticBurst validation set. setting_name denotes the name of the experiment
         setting to be used. """
@@ -38,19 +40,45 @@ def save_results(setting_name):
     expr_func = getattr(expr_module, 'main')
     network_list = expr_func()
 
-    base_results_dir = env_settings().save_data_path
-    dataset = SyntheticBurstVal()
+    base_results_dir = '/home/qiwei/program/deep-burst-sr/indoor'
+    dataset = SyntheticBurstVal(f'/home/qiwei/program/deep-burst-sr/indoor/synthetic_{mode}')
 
     for n in network_list:
         net = n.load_net()
         device = 'cuda'
         net.to(device).train(False)
 
-        out_dir = '{}/synburst/{}'.format(base_results_dir, n.get_unique_name())
+        out_dir = '{}/{}_{}'.format(base_results_dir, n.get_unique_name(), mode)
         os.makedirs(out_dir, exist_ok=True)
 
         for idx in tqdm.tqdm(range(len(dataset))):
             burst, _, meta_info = dataset[idx]
+
+            # if mode == 'grbg':
+            #     G1 = burst[:, 0, :, :]
+            #     R = burst[:, 1, :, :]
+            #     B = burst[:, 2, :, :]
+            #     G2 = burst[:, 3, :, :]
+            #     burst = torch.stack([R, G1, G2, B], dim=1)
+            # elif mode == 'rggb':
+            #     R = burst[:, 0, :, :]
+            #     G1 = burst[:, 1, :, :]
+            #     G2 = burst[:, 2, :, :]
+            #     B = burst[:, 3, :, :]
+            #     burst = torch.stack([R, G1, G2, B], dim=1)
+            # elif mode == 'bggr':
+            #     B = burst[:, 0, :, :]
+            #     G1 = burst[:, 1, :, :]
+            #     G2 = burst[:, 2, :, :]
+            #     R = burst[:, 3, :, :]
+            #     burst = torch.stack([R, G1, G2, B], dim=1)
+            # elif mode == 'gbrg':
+            #     G1 = burst[:, 0, :, :]
+            #     B = burst[:, 1, :, :]
+            #     R = burst[:, 2, :, :]
+            #     G2 = burst[:, 3, :, :]
+            #     burst = torch.stack([R, G1, G2, B], dim=1)
+
             burst_name = meta_info['burst_name']
 
             burst = burst.to(device).unsqueeze(0)

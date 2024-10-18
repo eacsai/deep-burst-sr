@@ -23,7 +23,7 @@ class SyntheticBurstVal(torch.utils.data.Dataset):
     """ Synthetic burst validation set. The validation burst have been generated using the same synthetic pipeline as
     employed in SyntheticBurst dataset.
     """
-    def __init__(self, root=None, initialize=True):
+    def __init__(self, root='/data/dataset/homework/SyntheticBurstVal', initialize=True):
         """
         args:
             root - Path to root dataset directory
@@ -31,8 +31,8 @@ class SyntheticBurstVal(torch.utils.data.Dataset):
         """
         root = env_settings().synburstval_dir if root is None else root
         self.root = root
-        self.burst_list = list(range(300))
-        self.burst_size = 14
+        self.burst_list = list(range(20))
+        self.burst_size = 4
 
     def initialize(self):
         pass

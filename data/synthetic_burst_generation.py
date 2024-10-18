@@ -18,6 +18,8 @@ import cv2
 import numpy as np
 import data.camera_pipeline as rgb2raw
 from utils.data_format_utils import torch_to_numpy, numpy_to_torch
+from torchvision.transforms import ToPILImage
+to_pil = ToPILImage()
 
 
 def rgb2rawburst(image, burst_size, downsample_factor=1, burst_transformation_params=None,
@@ -35,6 +37,9 @@ def rgb2rawburst(image, burst_size, downsample_factor=1, burst_transformation_pa
         image_processing_params - Parameters of the inverse camera pipeline used to obtain RAW image from sRGB image
         interpolation_type - interpolation operator used when performing affine transformations and downsampling
     """
+
+    # image_1 = to_pil(image)
+    # image_1.save('image1.png')
 
     if image_processing_params is None:
         image_processing_params = {}
@@ -76,6 +81,9 @@ def rgb2rawburst(image, burst_size, downsample_factor=1, burst_transformation_pa
     # Clip saturated pixels.
     image = image.clamp(0.0, 1.0)
 
+
+    # image_2 = to_pil(image)
+    # image_2.save('image2.png')
     # Generate LR burst
     image_burst_rgb, flow_vectors = single2lrburst(image, burst_size=burst_size,
                                                    downsample_factor=downsample_factor,
@@ -92,6 +100,9 @@ def rgb2rawburst(image, burst_size, downsample_factor=1, burst_transformation_pa
     else:
         shot_noise_level = 0
         read_noise_level = 0
+    
+    # shot_noise_level = 0
+    # read_noise_level = 0
 
     # Clip saturated pixels.
     image_burst = image_burst.clamp(0.0, 1.0)

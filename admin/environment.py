@@ -9,10 +9,10 @@ def create_default_local_file():
     empty_str = '\'\''
     default_settings = OrderedDict({
         'workspace_dir': empty_str,
-        'tensorboard_dir': 'self.workspace_dir + \'/tensorboard/\'',
+        'tensorboard_dir': '/home/qiwei/program/deep-burst-sr/tensorboard/',
         'pretrained_nets_dir': '\'{}/pretrained_networks/\''.format(base_path),
         'save_data_path': empty_str,
-        'zurichraw2rgb_dir': empty_str,
+        'zurichraw2rgb_dir': '/data/dataset/homework/SyntheticBurstVal/',
         'burstsr_dir': empty_str,
         'synburstval_dir': empty_str
     })

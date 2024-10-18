@@ -57,7 +57,7 @@ def dbsrnet_cvpr2021(enc_init_dim, enc_num_res_blocks, enc_out_dim,
                      ):
     # backbone
     alignment_net = PWCNet(load_pretrained=True,
-                           weights_path='{}/pwcnet-network-default.pth'.format(env_settings().pretrained_nets_dir))
+                           weights_path='/home/qiwei/program/deep-burst-sr/model/pwcnet-network-default.pth')
 
     encoder = dbsr_encoders.ResEncoderWarpAlignnet(enc_init_dim, enc_num_res_blocks, enc_out_dim,
                                                    alignment_net,

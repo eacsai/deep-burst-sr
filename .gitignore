@@ -4,5 +4,9 @@
 *.idea
 **/*.pth.tar
 **/*.pth
+*.png
+*.jpg
+*.pkl
+tensorboard/*
 admin/local.py
 pretrained_networks/*

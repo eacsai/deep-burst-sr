@@ -9,7 +9,7 @@ except:
 
 class TensorboardWriter:
     def __init__(self, directory, loader_names):
-        self.directory = directory
+        self.directory = '/home/qiwei/program/deep-burst-sr/tensorboard' + '/dbsr/default_synthetic'
         self.writer = OrderedDict({name: SummaryWriter(os.path.join(self.directory, name)) for name in loader_names})
 
     def write_info(self, module_name, script_name, description):
